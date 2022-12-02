@@ -1,0 +1,1 @@
+cat input | awk '{ if (/^$/) {print sum; sum = 0} else { sum += $1 } }' | sort | tail -3 | awk '{sum += $1} END {print "Part 1: " $1; print "Part 2: " sum}'
