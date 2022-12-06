@@ -106,7 +106,7 @@ fn (fluid Fluid[T]) peek() !T {
 }
 
 // this function converts queue to stack
-fn (mut fluid Fluid[T]) to_stack() !bool {
+fn (mut fluid Fluid[T]) to_stack() {
 	if !fluid.switch {
 		// convert queue to stack
 		for i in 1..fluid.elements.len() + 1 {
@@ -114,7 +114,7 @@ fn (mut fluid Fluid[T]) to_stack() !bool {
 		}
 		fluid.switch = true
 	}
-	return true
+	//return true
 }
 
 fn (mut fluid Fluid[T]) m_pop(times int) ![]T {
