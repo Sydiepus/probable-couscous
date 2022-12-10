@@ -26,26 +26,30 @@ fn check_signal_strength(cycle int, x int, mut signal_strength []int) {
 }
 
 fn move_sprite(mut sprite []string, x int) {
-	mut screen := []string{len: 40, init: "."}
+	mut tmp_sprite := []string{len: 40, init: "."}
 	if x < 0 {
+		// fix for row 2 and 3 extra #
+		sprite = tmp_sprite.clone()
 		return
 	}
-	if x + 1 > 39 {
-		if x - 1 < 0 {
-			screen[x] = "#"
-		} else {
-			screen[x] = "#"
-			screen[x-1] = "#"
-		}
-	} else if x - 1 >= 0 {
-		screen[x] = "#"
-		screen[x-1] = "#"
-		screen[x+1] = "#"
+	if x - 1 >= 0 && x + 1 <= 39 {
+		// you can place all 3 #
+		tmp_sprite[x-1] = "#"
+		tmp_sprite[x] = "#"
+		tmp_sprite[x+1] = "#"
+	} else if x - 1 < 0 && x + 1 <= 39 {
+		// place the middle one and the right one
+		tmp_sprite[x] = "#"
+		tmp_sprite[x+1] = "#"
+	} else if x - 1 >= 0 && x + 1 > 39 {
+		// place the middle one and the left one
+		tmp_sprite[x-1] = "#"
+		tmp_sprite[x] = "#"
 	} else {
-		screen[x] = "#"
-		screen[x+1] = "#"
+		// you can place the middle one only
+		tmp_sprite[x] = '#'
 	}
-	sprite = screen.clone()
+	sprite = tmp_sprite.clone()
 }
 
 fn place_pixel(mut screen [][]string, cycle int, sprite []string) {
@@ -121,7 +125,7 @@ fn main() {
 		}
 	}
 	println("Part 1 : ${arrays.sum<int>(signal_strength)!}")
-	// Bug with Part 2 but i was able to solve it.
+	// some # might be missing in the first col.
 	for i in screen {
 		println(i.join(""))
 	}
